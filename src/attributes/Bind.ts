@@ -1,27 +1,19 @@
-import {Scope, ScopeReference} from "../Scope";
 import {Attribute} from "../Attribute";
+import {Tree} from "../ast";
 
 export class Bind extends Attribute {
-    protected key?: string;
-    protected boundScope?: Scope;
+    protected tree: Tree;
 
     public set value(v: any) {
-        if (this.boundScope) {
-            this.boundScope.set(this.key, v);
-        }
+        this.tree.set(v, this.tag.scope);
     }
 
     public get value(): any {
-        if (!this.boundScope) return null;
-        return this.boundScope.get(this.key, false);
+        return this.tree.evaluate(this.tag.scope);
     }
 
     public setup(): void {
-        const ref: ScopeReference = this.tag.scope.getReference(this.tag.rawAttributes['v-bind']);
-
-        this.key = ref.key;
-        this.boundScope = ref.scope;
-        this.boundScope.bind(`change:${this.key}`, this.updateTo, this);
+        this.tree = new Tree(this.tag.rawAttributes['v-bind']);
 
         if (!this.value)
             this.updateFrom();

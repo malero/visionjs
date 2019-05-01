@@ -18,6 +18,7 @@ var List_1 = require("./attributes/List");
 var ListItem_1 = require("./attributes/ListItem");
 var simple_ts_event_dispatcher_1 = require("simple-ts-event-dispatcher");
 var Name_1 = require("./attributes/Name");
+var If_1 = require("./attributes/If");
 var Tag = /** @class */ (function (_super) {
     __extends(Tag, _super);
     function Tag(element, dom) {
@@ -103,6 +104,7 @@ var Tag = /** @class */ (function (_super) {
         'v-list-item': ListItem_1.ListItem,
         'v-bind': Bind_1.Bind,
         'v-click': Click_1.Click,
+        'v-if': If_1.If
     };
     return Tag;
 }(simple_ts_event_dispatcher_1.EventDispatcher));

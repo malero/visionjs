@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Attribute_1 = require("../Attribute");
+var ast_1 = require("../ast");
 var Bind = /** @class */ (function (_super) {
     __extends(Bind, _super);
     function Bind() {
@@ -18,23 +19,16 @@ var Bind = /** @class */ (function (_super) {
     }
     Object.defineProperty(Bind.prototype, "value", {
         get: function () {
-            if (!this.boundScope)
-                return null;
-            return this.boundScope.get(this.key, false);
+            return this.tree.evaluate(this.tag.scope);
         },
         set: function (v) {
-            if (this.boundScope) {
-                this.boundScope.set(this.key, v);
-            }
+            this.tree.set(v, this.tag.scope);
         },
         enumerable: true,
         configurable: true
     });
     Bind.prototype.setup = function () {
-        var ref = this.tag.scope.getReference(this.tag.rawAttributes['v-bind']);
-        this.key = ref.key;
-        this.boundScope = ref.scope;
-        this.boundScope.bind("change:" + this.key, this.updateTo, this);
+        this.tree = new ast_1.Tree(this.tag.rawAttributes['v-bind']);
         if (!this.value)
             this.updateFrom();
         else

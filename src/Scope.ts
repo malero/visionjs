@@ -108,10 +108,20 @@ export class Scope extends EventDispatcher {
 
         this.wrapped = wrapped;
         for (const field in wrapped) {
+
+            // Wrap plain objects
+            const value = this.wrapped[field];
+            if (value && typeof value === 'object' && value.constructor == Object) {
+                const childScope = new Scope();
+                childScope.wrap(value);
+                this.set(field, childScope);
+                continue;
+            }
             const getter = () => {
                 let val = this.wrapped[field];
-                if (typeof val === 'function')
+                if (typeof val === 'function') {
                     val = val.bind(this.data);
+                }
                 return val;
             };
 

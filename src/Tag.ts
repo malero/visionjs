@@ -8,6 +8,7 @@ import {ListItem} from "./attributes/ListItem";
 import {EventDispatcher} from "simple-ts-event-dispatcher";
 import {DOM} from "./DOM";
 import {Name} from "./attributes/Name";
+import {If} from "./attributes/If";
 
 export class Tag extends EventDispatcher {
     public readonly rawAttributes: { [key: string]: string; };
@@ -22,6 +23,7 @@ export class Tag extends EventDispatcher {
         'v-list-item': ListItem,
         'v-bind': Bind,
         'v-click': Click,
+        'v-if': If
     };
 
     protected inputTags: string[] = [

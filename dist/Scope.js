@@ -104,10 +104,19 @@ var Scope = /** @class */ (function (_super) {
             throw Error("A scope can only wrap a single object");
         this.wrapped = wrapped;
         var _loop_1 = function (field) {
+            // Wrap plain objects
+            var value = this_1.wrapped[field];
+            if (value && typeof value === 'object' && value.constructor == Object) {
+                var childScope = new Scope();
+                childScope.wrap(value);
+                this_1.set(field, childScope);
+                return "continue";
+            }
             var getter = function () {
                 var val = _this.wrapped[field];
-                if (typeof val === 'function')
+                if (typeof val === 'function') {
                     val = val.bind(_this.data);
+                }
                 return val;
             };
             var setter = function (value) {
